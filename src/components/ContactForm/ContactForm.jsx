@@ -1,8 +1,11 @@
+import { Report } from 'notiflix';
 import css from './ContactForm.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContactThunk } from 'redux/contactsOperations';
+import { selectVisibleContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
+  const visibleContacts = useSelector(selectVisibleContacts);
   const dispatch = useDispatch();
 
   const formSubmit = e => {
@@ -13,7 +16,15 @@ export const ContactForm = () => {
 
     const newContact = { name, phone: number };
 
-    dispatch(addContactThunk(newContact));
+    if (visibleContacts.some(contact => contact.name === name)) {
+      Report.warning(
+        `${name}`,
+        'This user is already in the contact list.',
+        'OK'
+      );
+    } else {
+      dispatch(addContactThunk(newContact));
+    }
 
     form.reset();
   };

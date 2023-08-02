@@ -2,12 +2,32 @@ import { useEffect } from 'react';
 import Contact from '../Contact';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContactsThunk } from 'redux/contactsOperations';
-import { selectVisibleContacts } from 'redux/selectors';
+import {
+  selectError,
+  selectIsLoading,
+  selectVisibleContacts,
+} from 'redux/selectors';
 import css from './ContactList.module.css';
 import Message from 'components/Message/Message';
+import Loader from 'components/Loader/Loader';
+import { toast } from 'react-toastify';
+
+const toastConfig = {
+  position: 'top-right',
+  autoClose: 3000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'colored',
+};
 
 function ContactList() {
   const visibleContacts = useSelector(selectVisibleContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,9 +47,11 @@ function ContactList() {
           })}
         </ul>
       )}
+      {isLoading && <Loader />}
       {visibleContacts.length === 0 && (
         <Message text="Contact list is empty." />
       )}
+      {error !== null && toast.error(error, toastConfig)}
     </>
   );
 }

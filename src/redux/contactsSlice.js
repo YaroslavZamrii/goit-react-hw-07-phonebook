@@ -16,18 +16,22 @@ const contactsSlice = createSlice({
   initialState: contactsInitialState,
   extraReducers: builder =>
     builder
+      // fetchContactsThunk
+      //
       .addCase(fetchContactsThunk.pending, state => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchContactsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.item = action.payload;
+        state.item = action.payload.slice().reverse();
       })
       .addCase(fetchContactsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
+      // addContactThunk
+      //
       .addCase(addContactThunk.pending, state => {
         state.isLoading = true;
         state.error = null;
@@ -40,6 +44,8 @@ const contactsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      // deleteContactThunk
+      //
       .addCase(deleteContactThunk.pending, state => {
         state.isLoading = true;
         state.error = null;

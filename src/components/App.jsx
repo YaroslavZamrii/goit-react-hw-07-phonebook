@@ -3,6 +3,7 @@ import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter';
 
 import css from './App.module.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
   return (

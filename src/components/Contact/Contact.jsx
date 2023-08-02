@@ -10,7 +10,6 @@ function Contact({ name, number, contactId }) {
 
   const handleDelete = () => {
     dispatch(deleteContactThunk(contactId));
-    console.log('contactId:', contactId);
   };
 
   return (
