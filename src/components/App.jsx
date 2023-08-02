@@ -18,11 +18,12 @@ export const App = () => {
       <ContactForm />
       <h2 className={css.subtitle}>Contacts</h2>
       <Filter />
-      {contacts.length > 0 ? (
+      <ContactList />
+      {/* {contacts.length > 0 ? (
         <ContactList />
       ) : (
         <Message text="Contact list is empty." />
-      )}
+      )} */}
     </div>
   );
 };

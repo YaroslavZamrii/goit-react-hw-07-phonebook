@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { Report } from 'notiflix';
 import { addContact } from 'redux/contactsSlice';
+import { addContactThunk } from 'redux/contactsOperations';
 
 export const ContactForm = () => {
   const contacts = useSelector(state => state.contacts.item);
@@ -14,17 +15,9 @@ export const ContactForm = () => {
     const name = form.elements.name.value;
     const number = form.elements.number.value;
 
-    const newContact = { id: nanoid(), name, number };
+    const newContact = { id: nanoid(), name, phone: number };
 
-    if (contacts.some(contact => contact.name === name)) {
-      Report.warning(
-        `${name}`,
-        'This user is already in the contact list.',
-        'OK'
-      );
-    } else {
-      dispatch(addContact(newContact));
-    }
+    dispatch(addContactThunk(newContact));
 
     form.reset();
   };
