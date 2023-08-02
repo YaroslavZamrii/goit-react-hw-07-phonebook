@@ -1,41 +1,36 @@
 import { useEffect } from 'react';
 import Contact from '../Contact';
-import { deleteContact } from 'redux/contactsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContactsThunk } from 'redux/contactsOperations';
+import { selectVisibleContacts } from 'redux/selectors';
 import css from './ContactList.module.css';
+import Message from 'components/Message/Message';
 
 function ContactList() {
-  const contacts = useSelector(state => state.contacts.item);
-  const filter = useSelector(state => state.filters.filter);
+  const visibleContacts = useSelector(selectVisibleContacts);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!contacts) return;
     dispatch(fetchContactsThunk());
-  }, [contacts, dispatch]);
-
-  const deleteSelectedContact = contactId => dispatch(deleteContact(contactId));
-
-  const filteredContacts = contacts?.filter(contact =>
-    contact.name.toLowerCase().includes(filter)
-  );
+  }, [dispatch]);
 
   return (
-    <ul>
-      {filteredContacts.map(({ id, name, number }) => {
-        return (
-          <li className={css.item} key={id}>
-            <Contact
-              name={name}
-              number={number}
-              contactId={id}
-              onDeleteContact={deleteSelectedContact}
-            />
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      {visibleContacts.length !== 0 && (
+        <ul>
+          {visibleContacts.map(({ id, name, phone }) => {
+            return (
+              <li className={css.item} key={id}>
+                <Contact name={name} number={phone} contactId={id} />
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {visibleContacts.length === 0 && (
+        <Message text="Contact list is empty." />
+      )}
+    </>
   );
 }
 

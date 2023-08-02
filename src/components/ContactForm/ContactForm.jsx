@@ -1,12 +1,8 @@
 import css from './ContactForm.module.css';
-import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { Report } from 'notiflix';
-import { addContact } from 'redux/contactsSlice';
+import { useDispatch } from 'react-redux';
 import { addContactThunk } from 'redux/contactsOperations';
 
 export const ContactForm = () => {
-  const contacts = useSelector(state => state.contacts.item);
   const dispatch = useDispatch();
 
   const formSubmit = e => {
@@ -15,7 +11,7 @@ export const ContactForm = () => {
     const name = form.elements.name.value;
     const number = form.elements.number.value;
 
-    const newContact = { id: nanoid(), name, phone: number };
+    const newContact = { name, phone: number };
 
     dispatch(addContactThunk(newContact));
 
